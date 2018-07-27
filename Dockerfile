@@ -18,22 +18,27 @@ RUN /usr/local/bin/install-plugins.sh simple-theme-plugin
 # Scaling
 RUN /usr/local/bin/install-plugins.sh kubernetes
 
-#Pipeline
-#RUN /usr/local/bin/install-plugins.sh pipeline
+#Git
+RUN /usr/local/bin/install-plugins.sh git
+
+#Docker pipeline
+#RUN /usr/local/bin/install-plugins.sh docker-workflow
+#RUN /usr/local/bin/install-plugins.sh docker-plugin
+#RUN /usr/local/bin/install-plugins.sh docker-build-step
+
+#Google Cloud Build
+RUN /usr/local/bin/install-plugins.sh google-oauth-plugin
+RUN /usr/local/bin/install-plugins.sh google-cloudbuild
 
 # install Maven
-USER root
-RUN apt-get update && apt-get install -y maven
+#USER root
+#RUN apt-get update && apt-get install -y maven
 ENV KUBERNETES_VERSION=v1.10.3
 
-#install docker
-RUN apt-get -y install apt-transport-https ca-certificates gnupg2 software-properties-common 
-RUN curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg > /tmp/dkey
-RUN apt-key add /tmp/dkey 
-RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") $(lsb_release -cs) stable"
-RUN apt-get update && apt-get -y install docker-ce
+#RUN rm -rf /var/lib/apt/lists/*
 
 #install kubectl
+USER root
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$KUBERNETES_VERSION/bin/linux/amd64/kubectl
 RUN chmod +x ./kubectl
 RUN mv ./kubectl /usr/local/bin/kubectl
